@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 public class GameSetter{
 	public GameSetter() {
-		System.out.println("game setter start");
+//		System.out.println("game setter start");
 		// 게임을 플레이할 플레이어 수 입력
 		int player_num = GameSetter.inputPlayerNumber();
 		System.out.println("input player number : " + player_num);
@@ -17,8 +17,8 @@ public class GameSetter{
 		
 		// 카드 생성
 		GameSetter.createCardSet();
-		System.out.println(Game.players);
-		System.out.println("finish setting game");
+//		System.out.println(Game.players);
+//		System.out.println("finish setting game");
 	}
 	
 	public static int inputPlayerNumber() {
@@ -42,21 +42,21 @@ public class GameSetter{
 		
 		HumanPlayer player0 = new HumanPlayer("mainPlayer");
 		players.add(player0);
-		System.out.println("create player0");
+//		System.out.println("create player0");
 		if(player_number >= 2) {
 			ComputerPlayer player1 = new ComputerPlayer("player1");
 			players.add(player1);
-			System.out.println("create player1");
+//			System.out.println("create player1");
 		}
 		if(player_number >= 3) {
 			ComputerPlayer player2 = new ComputerPlayer("player2");
 			players.add(player2);
-			System.out.println("create player2");
+//			System.out.println("create player2");
 		}
 		if(player_number >= 4) {
 			ComputerPlayer player3 = new ComputerPlayer("player3");
 			players.add(player3);
-			System.out.println("create player3");
+//			System.out.println("create player3");
 		}
 		
 		return players;
@@ -65,7 +65,7 @@ public class GameSetter{
 	public static void createCardSet() {
 		ArrayList<Card> card_list = new ArrayList<Card>();
 	
-		System.out.println("start to create card");
+//		System.out.println("start to create card");
 		
 		ArrayList<String> suit = new ArrayList<String>(Arrays.asList("S","C","D","H"));
 		ArrayList<String> rank = new ArrayList<String>(Arrays.asList("A","2","3","4","5","6","7","8","9","10","J","Q","K"));
@@ -83,9 +83,9 @@ public class GameSetter{
 		card_list.add(black_jocker);
 		card_list.add(color_joker);
 		
-		System.out.println(card_list);
+//		System.out.println(card_list);
 		
 		Game.addCard(card_list);
-		System.out.println("finish create card");
+//		System.out.println("finish create card");
 	}
 }
