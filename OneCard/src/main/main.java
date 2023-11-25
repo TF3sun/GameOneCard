@@ -1,9 +1,10 @@
 package main;
 
 public class main {
+	private static Game game;
 
 	public static void main(String[] args) {
-		Game game = new Game();
+		game = new Game();
 		// TODO Auto-generated method stub
 	}
 
