@@ -4,24 +4,29 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
-public class GameSetter{
+public class GameSetter{	
+	private int player_number;
+	private ArrayList<Player> players;
+	private ArrayList<Card> cards;
+	
 	public GameSetter() {
 //		System.out.println("game setter start");
 		// 게임을 플레이할 플레이어 수 입력
-		int player_num = GameSetter.inputPlayerNumber();
-		System.out.println("input player number : " + player_num);
+		player_number = inputPlayerNumber();
+//		System.out.println("input player number : " + player_number);
 
 		// 플레이어 수 만큼 Player 객체 생성
-		ArrayList<Player> players = GameSetter.createPlayer(player_num);
-		Game.addPlayer(players);
+		players = createPlayers(player_number);
+		Game.players.addAll(players);
 		
 		// 카드 생성
-		GameSetter.createCardSet();
+		cards = createCardSet();
+		Game.cards.addAll(cards);
 //		System.out.println(Game.players);
 //		System.out.println("finish setting game");
 	}
 	
-	public static int inputPlayerNumber() {
+	private int inputPlayerNumber() {
 		Scanner scanner = new Scanner(System.in);
 		
 		while(true) {
@@ -37,7 +42,7 @@ public class GameSetter{
 		}
 	}
 	
-	static ArrayList<Player> createPlayer(int player_number) {
+	private ArrayList<Player> createPlayers(int player_number) {
 		ArrayList<Player> players = new ArrayList();
 		
 		HumanPlayer player0 = new HumanPlayer("mainPlayer");
@@ -62,11 +67,8 @@ public class GameSetter{
 		return players;
 	}
 
-	public static void createCardSet() {
+	private ArrayList<Card> createCardSet() {
 		ArrayList<Card> card_list = new ArrayList<Card>();
-	
-//		System.out.println("start to create card");
-		
 		ArrayList<String> suit = new ArrayList<String>(Arrays.asList("S","C","D","H"));
 		ArrayList<String> rank = new ArrayList<String>(Arrays.asList("A","2","3","4","5","6","7","8","9","10","J","Q","K"));
 	
@@ -83,9 +85,9 @@ public class GameSetter{
 		card_list.add(black_jocker);
 		card_list.add(color_joker);
 		
+		return card_list;
 //		System.out.println(card_list);
 		
-		Game.addCard(card_list);
 //		System.out.println("finish create card");
 	}
 }

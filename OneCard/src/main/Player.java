@@ -3,20 +3,29 @@ package main;
 import java.util.ArrayList;
 
 public class Player {
-	String name;
-    static ArrayList<Card> cards = new ArrayList();
-    int score = 0;
+	public String name;
+    public static ArrayList<Card> cards = new ArrayList();
+    int score;
     
     public Player(String name) {
     	this.name = name;
     	this.cards = cards;
-    }
-
-    public void getCard(Card card) {
-        this.cards.add(card);
+    	this.score = 0;
     }
     
     public void startTurn() {
+    	
+    }
+    
+    private void useCard() {
+    	
+    }
+    
+    private void drawCard() {
+    	
+    }
+    
+    private void finishTurn() {
     	
     }
 }

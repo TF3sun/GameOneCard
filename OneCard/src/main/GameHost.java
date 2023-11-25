@@ -5,14 +5,16 @@ import java.util.Collections;
 import java.util.Random;
 
 public class GameHost {
-	GameHost() {
-		int first_turn = GameHost.establishFirstOder();
+	private static int first_turn;
+	
+	public static void Main() {
+		first_turn = establishFirstOder();
 		
-		GameHost.suffleCards();
+		suffleCards();
 		
-		GameHost.giveCardsToAllPlayer(Game.players);
+		giveCardsToAllPlayer();
 		
-		GameHost.startTurn(first_turn);
+		startTurn(first_turn);
 	}
 
 	private static int establishFirstOder() {
@@ -27,23 +29,23 @@ public class GameHost {
 		Collections.shuffle(Game.cards);
 	}
 	
-	private static void giveCardsToAllPlayer(ArrayList<Player> players) {
-		for(int i = 0; i < players.size(); i++) {
-			Player player = players.get(i);
+	private static void giveCardsToAllPlayer() {
+		for(int i = 0; i < Game.players.size(); i++) {
+			Player player = Game.players.get(i);
 			
 			for(int j = 0; j < Game.cards.size(); j++) {
 				Card card = Game.cards.get(j);
-				GameHost.giveCardToPlayer(player, card);
+				giveCardToPlayer(player, card);
 			}
 		}
 	}
 	
 	private static void giveCardToPlayer(Player player, Card card) {
-		player.getCard(card);
-		Game.removeCard(card);
+		player.cards.add(card);
+		Game.cards.remove(card);
 	}
 	
 	private static void startTurn(int turn_idx) {
-		Game.players.get(turn_idx).startTurn();
+		Game.start(turn_idx);
 	}
 }
