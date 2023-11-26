@@ -10,10 +10,10 @@ class HumanPlayer extends Player {
 	}
 
 	public void startTurn() {
-		System.out.println("플레이어의 턴입니다. 카드를 선택해주세요.");
+		System.out.println("홈 카드 : " + Game.home_card.name);
+		System.out.println(this.getName() + "의 턴입니다. 카드를 선택해주세요.");
 		showCards();
-		
-		useCard(selectCard());
+		selectCard();
 	}
 
 	private void showCards() {
@@ -26,13 +26,18 @@ class HumanPlayer extends Player {
 		System.out.println();
 	}
 
-	private Card selectCard() {
-		System.out.println("숫자 입력 >> ");
-		
-		Scanner scanner = new Scanner(System.in);
+	private void selectCard() {
+	    System.out.print("숫자 입력 >> ");
+	    Scanner scanner = new Scanner(System.in);
 	    int input_idx = scanner.nextInt();
 	    
-	    scanner.close();
-	    return getPlayer_cards().get(input_idx);
+	    // Do not close the Scanner here
+	    if(input_idx == 0) {
+	    	System.out.println("0번 선택");
+	    	drawCard();
+	    }else {
+	    	useCard(getPlayer_cards().get(input_idx-1));
+	    }
 	}
+
 }
