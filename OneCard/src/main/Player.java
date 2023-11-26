@@ -3,27 +3,24 @@ package main;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+// 플레이어 객체
 public class Player {
-	private String name;
-	private int score;
-	private ArrayList<Card> player_cards;
+	private String name;					// 플레이어 이름
+	private int score;						// 플레이어 점수
+	private ArrayList<Card> player_cards;	// 플레이어가 가진 카드 목록
 
 	public Player(String name) {
 		player_cards = new ArrayList<Card>();
-//		System.out.println(player_cards);
-		
-//		player_cards.add(new Card("1","1"));
-//		System.out.println(player_cards);
-
 		this.name = name;
 		this.score = 0;
 	}
 
+//	플레이어의 턴이 시작할때 호출되는 메서드
 	public void startTurn() {
 
 	}
 
-	
+//	플레이어가 카드 사용을 선택했을떄 호출되는 메서드
 	public void useCard(Card card) {
 //		카드를 낼 수 있는 조건
 //		카드의 문양이 같거나, 숫자가 같은 경우 사용 가능
@@ -58,7 +55,7 @@ public class Player {
 					inputOneCard();
 				}
 			}
-//			내려는 카드가 컬러 조커인 경우 무조건 낼 수 있음
+//		내려는 카드가 컬러 조커인 경우 무조건 낼 수 있음
 		}else if(card.suit == "Color") {
 			player_cards.remove(card);
 			Game.used_cards.add(card);
@@ -66,7 +63,7 @@ public class Player {
 			if(player_cards.size()==1) {
 				inputOneCard();
 			}
-//			내려는 카드가 흑백 조커인 경우, 나와있는 카드가 스페이드 혹은 클로버야 낼 수 있음
+//		내려는 카드가 흑백 조커인 경우, 나와있는 카드가 스페이드 혹은 클로버야 낼 수 있음
 		}else if(card.suit == "Black") {
 			if(Game.home_card.suit == "S" || Game.home_card.suit == "C") {
 				player_cards.remove(card);
@@ -105,22 +102,9 @@ public class Player {
 	    }
 	}
 
-
+//	플레이어가 카드 뽑기를 선택한 경우 호출되는 메서드
 	public void drawCard() {
-//		System.out.println("exe drawCard");
-//		System.out.println(this);
 		Game.drawCardFromPlayer(this);
-	}
-
-	public void finishTurn() {
-
-	}
-
-	public void recieveCard(Card card) {
-		player_cards.add(card);
-//		System.out.println(player_cards);
-//		System.out.println(player_cards.size());
-//		System.out.println('!');
 	}
 
 	public String getName() {

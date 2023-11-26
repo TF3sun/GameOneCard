@@ -9,27 +9,26 @@ import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Game {
-	public static ArrayList<Player> players = new ArrayList();
-	public static ArrayList<Card> cards = new ArrayList();
-	public static ArrayList<Card> used_cards = new ArrayList();
-	static Card home_card;
+	public static ArrayList<Player> players = new ArrayList();	// 플레이어 저장하는 리스트
+	public static ArrayList<Card> cards = new ArrayList();		// 카드 목록 저장하는 리스트
+	public static ArrayList<Card> used_cards = new ArrayList();	// 사용된 카드 목록 저장하는 리스트
+	static Card home_card;										// 마지막으로 사용된 카드 저장하는 변수
+	
 	Scanner scanner = new Scanner(System.in);
-//	public static Player player;
-//	private static Host host;
 
+	
+//	게임 생성시 게임 설정 및 시작
 	Game() {
 		set();
 		play();
 	}
 
-//	게임 시작 전 설정하는 메서드
+//	게임 기본설정을 위한 메서드
 	private void set() {
-//		System.out.println("Start Set Game");
 		int player_number;
 
 		// 게임을 플레이할 플레이어 수 입력
 		player_number = inputPlayerNumber();
-//		System.out.println("input player number : " + player_number);
 
 		// 플레이어 수 만큼 Player 객체 생성
 		players.addAll(createPlayers(player_number));
@@ -39,45 +38,53 @@ public class Game {
 
 //		카드 순서 섞음
 		Collections.shuffle(cards);
-//		System.out.println(Game.players);
-//		System.out.println("finish setting game");
+		
+//		플레이어들에게 7장씩 카드를 나눠줌
 		for (int i = 0; i < players.size(); i++) {
 			for (int j = 0; j < 7; j++) {
-//				System.out.println(cards.size());
-				players.get(i).recieveCard(cards.remove(0));
+				players.get(i).getPlayer_cards().add(cards.remove(0));
 			}
-//			System.out.println();
 		}
-//		used_cards.add(cards.remove(0));
 	}
 
-//	게임 실행
+	
+//	게임 실행하는 메서드
 	private void play() {
-//		카드를 한장 꺼내놓음
+//		첫 카드를 한장 꺼내놓음
 		used_cards.add(cards.remove(0));
 
-//		시작한 순서를 랜덤 지정
+//		시작할 순서를 랜덤 지정
 		int turn = getRandNum();
 
 //		사용자 턴 반복
 		while (true) {
 			home_card = used_cards.get(used_cards.size() - 1);
 
+//			플레이어가 카드를 모두 사용하여 끝난 경우
 			if (players.get(turn).getPlayer_cards().size() == 0) {
 				turn++;
+//			플레이어에게 카드가 남아 있는 경우
 			} else {
 				players.get(turn).startTurn();
 			}
 
+//			턴 값 초기화
 			if (turn == players.size() - 1) {
 				turn = turn - players.size() + 1;
 			} else {
 				turn++;
 			}
 			System.out.println("==============================================================================");
+			
+			try {
+				Thread.sleep(1000); //1초 대기
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
+//	게임을 플레이할 플레이어 수 입력받고 반환하는 메서드
 	private int inputPlayerNumber() {
 		while (true) {
 			System.out.print("플레이어 수를 입력하세요. : ");
@@ -91,31 +98,29 @@ public class Game {
 		}
 	}
 
+//	게임할 플레이어 수 만큼 플레이어 객체 생성 및 플레이어 목록 반환 메서드
 	private ArrayList<Player> createPlayers(int player_number) {
 		ArrayList<Player> players = new ArrayList();
 
 		HumanPlayer player0 = new HumanPlayer("mainPlayer");
 		players.add(player0);
-//		System.out.println("create player0");
 		if (player_number >= 2) {
 			ComputerPlayer player1 = new ComputerPlayer("player1");
 			players.add(player1);
-//			System.out.println("create player1");
 		}
 		if (player_number >= 3) {
 			ComputerPlayer player2 = new ComputerPlayer("player2");
 			players.add(player2);
-//			System.out.println("create player2");
 		}
 		if (player_number >= 4) {
 			ComputerPlayer player3 = new ComputerPlayer("player3");
 			players.add(player3);
-//			System.out.println("create player3");
 		}
 
 		return players;
 	}
 
+//	카드 생성 및 목록 반환 메서드
 	private ArrayList<Card> createCardSet() {
 		ArrayList<Card> card_list = new ArrayList<Card>();
 		ArrayList<String> suit = new ArrayList<String>(Arrays.asList("S", "C", "D", "H"));
@@ -136,17 +141,37 @@ public class Game {
 		card_list.add(color_joker);
 
 		return card_list;
-//		System.out.println(card_list);
-
-//		System.out.println("finish create card");
 	}
 
+//	첫번째 순서 랜덤 지정 후 반환 메서드
 	private int getRandNum() {
 		int randnum = (int) (Math.random() * players.size() - 1);
 
 		System.out.println("첫번째 순서는 " + players.get(randnum).getName() + "입니다.");
 		System.out.println("==============================================================================");
 		return randnum;
+	}
+	
+//	플레이어가 카드 뽑기를 선택한 경우 호출되는 메서드
+	public static void drawCardFromPlayer(Player player) {
+//		뽑을 수 있는 카드가 없는 경우 실행
+		if (cards.size() == 0) {
+//			사용된 카드 목록에 있는 카드 미사용 카드에 넣음
+			cards.addAll(getUsed_cards());
+
+//			사용된 카드 목록에서 마지막 한장을 제외하고 삭제
+			for (int i = 0; i < used_cards.size() - 1; i++) {
+				getUsed_cards().remove(0);
+			}
+
+//			미사용 카드 목록 섞은 뒤 플레이어에게 카드를 줌
+			Collections.shuffle(cards);
+			player.getPlayer_cards().add(cards.remove(0));
+			
+//			뽑을 수 있는 카드가 있는 경우 플레이어에게 카드를 줌
+		} else {
+			player.getPlayer_cards().add(cards.remove(0));
+		}
 	}
 
 	public static ArrayList<Card> getUsed_cards() {
@@ -163,32 +188,7 @@ public class Game {
 
 	public static void setCards(ArrayList<Card> cards) {
 		Game.cards = cards;
-	}
-
-	public static void drawCardFromPlayer(Player player) {
-		// TODO Auto-generated method stub
-		if (cards.size() == 0) {
-			cards.addAll(getUsed_cards());
-
-			for (int i = 0; i < used_cards.size() - 1; i++) {
-				getUsed_cards().remove(0);
-//				home_cardused_cards
-
-//				player.getPlayer_cards().add(cards.remove(0));
-//				System.out.println("남은 카드 수: " + cards.size());
-//				cards.used_cards.remove(0);
-			}
-			
-			Collections.shuffle(cards);
-			player.getPlayer_cards().add(cards.remove(0));
-//			System.out.println("남은 카드 수: " + cards.size());
-			
-		} else {
-			player.getPlayer_cards().add(cards.remove(0));
-//			System.out.println(player.getPlayer_cards().size());
-//			System.out.println("남은 카드 수: " + cards.size());
-		}
-	}
+	}	
 
 	public static Card getHome_card() {
 		return home_card;
